@@ -14,10 +14,6 @@ CREATE TABLE evento (
     semana VARCHAR(3) NOT NULL
 );
 
--- ADD COLUNA
-ALTER TABLE evento
-ADD COLUMN semana VARCHAR(3) NOT NULL;
-
 CREATE TABLE informacoes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_evento INT,

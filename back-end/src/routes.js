@@ -1,13 +1,12 @@
 const express = require('express');
 const router = express.Router();
 
-const CarroController = require('./controllers/CarroController');
+const EventoController = require('./controllers/EventoController');
 
-// router.get('/evento', CarroController.buscarUm);
-router.get('/evento', CarroController.buscarTodos); 
-router.post('/evento', CarroController.inserir);
-router.put('/evento/:id', CarroController.alterar);
-router.delete('/evento/del/:id', CarroController.excluir);
+router.get('/evento', EventoController.buscarTodos); 
+router.post('/evento', EventoController.inserir);
+router.put('/evento/:id', EventoController.alterar);
+router.delete('/evento/del/:id', EventoController.excluir);
 
 module.exports = router;
 

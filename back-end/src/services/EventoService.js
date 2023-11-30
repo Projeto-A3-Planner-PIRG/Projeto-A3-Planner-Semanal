@@ -16,7 +16,7 @@ module.exports = {
 
             db.query('SELECT * FROM evento WHERE semana = ?', [semana], (error, results) => {
                 if(error) { rejeitado(error); return; }
-                if(results.length > 0){ //vai verificar se retornou mais de 1 e pegar o 1
+                if(results.length > 0){ 
                     aceito(results);
                 }else {
                     aceito(false);
@@ -31,7 +31,7 @@ module.exports = {
                 [nome, data, categoria, concluido, semana],
                 (error, results)=>{
                     if(error){ rejeitado(error); return; }
-                    aceito(results.insertId); //insertId
+                    aceito(results.insertId);
                 }
             );
         });

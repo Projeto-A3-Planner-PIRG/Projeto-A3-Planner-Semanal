@@ -1,4 +1,4 @@
-const CarroService = require('../services/CarroService');
+const EventoService = require('../services/EventoService');
 
 module.exports = {
     
@@ -8,17 +8,17 @@ module.exports = {
         let semana = req.query.semana;
 
         if (semana) {
-            let evento = await CarroService.buscarUm(semana);
+            let evento = await EventoService.buscarUm(semana);
 
             if(evento){
-                json.result = evento; //se tiver nota ele joga no json
+                json.result = evento; 
             }
 
             res.json(json);
             return
         }
 
-        let eventos = await CarroService.buscarTodos();
+        let eventos = await EventoService.buscarTodos();
 
         for(let i in eventos){
             json.result.push({
@@ -37,11 +37,11 @@ module.exports = {
     buscarUm: async (req, res) => {
         let json = {error:'', result:{}};
 
-        let semana = req.query.semana; //para pegar o parametro
-        let evento = await CarroService.buscarUm(semana);
+        let semana = req.query.semana; 
+        let evento = await EventoService.buscarUm(semana);
 
         if(evento){
-            json.result = evento; //se tiver nota ele joga no json
+            json.result = evento; 
         }
 
         res.json(json);
@@ -57,7 +57,7 @@ module.exports = {
         let semana = req.body.semana;
         console.log(nome)
         if (nome && data && categoria && concluido && semana){
-            let eventoId = await CarroService.inserir(nome, data, categoria, concluido, semana);
+            let eventoId = await EventoService.inserir(nome, data, categoria, concluido, semana);
             json.result = {
                 id: eventoId,
                 nome,
@@ -84,7 +84,7 @@ module.exports = {
                 throw new Error('Campos não enviados');
             }
     
-            await CarroService.alterar(id, nome, data, categoria, concluido, semana);
+            await EventoService.alterar(id, nome, data, categoria, concluido, semana);
     
             json.result = { id, nome, data, categoria, concluido, semana };
             console.log('Alteração bem-sucedida');
@@ -97,7 +97,7 @@ module.exports = {
     
     excluir: async(req, res) => {
         let json = {error:'', result:{}};
-        await CarroService.excluir(req.params.id);
+        await EventoService.excluir(req.params.id);
         
         res.json(json);
     },
