@@ -81,14 +81,56 @@ module.exports = {
         });
     },
 
-    excluir: (id)=> {
-        return new Promise((aceito, rejeitado)=> {
-            db.query('DELETE FROM evento WHERE id = ?',[id], (error, results ) =>{
-                if(error){ rejeitado(error); return; }
-                aceito(results);
+    excluir: async (eventoId) => {
+        return new Promise((aceito, rejeitado) => {
+            // Iniciar a transação
+            db.beginTransaction((erro) => {
+                if (erro) {
+                    rejeitado(erro);
+                    return;
+                }
+    
+                // Excluir informações associadas ao evento na tabela informacoes
+                db.query(
+                    'DELETE FROM informacoes WHERE id_evento = ?',
+                    [eventoId],
+                    (erroInformacoes) => {
+                        if (erroInformacoes) {
+                            // Rollback em caso de erro na exclusão das informações
+                            return db.rollback(() => {
+                                rejeitado(erroInformacoes);
+                            });
+                        }
+    
+                        // Excluir o evento na tabela evento
+                        db.query(
+                            'DELETE FROM evento WHERE id = ?',
+                            [eventoId],
+                            (erroEvento) => {
+                                if (erroEvento) {
+                                    // Rollback em caso de erro na exclusão do evento
+                                    return db.rollback(() => {
+                                        rejeitado(erroEvento);
+                                    });
+                                }
+    
+                                // Commit se ambas as exclusões foram bem-sucedidas
+                                db.commit((commitErro) => {
+                                    if (commitErro) {
+                                        // Rollback em caso de erro no commit
+                                        return db.rollback(() => {
+                                            rejeitado(commitErro);
+                                        });
+                                    }
+    
+                                    // Tudo bem, indicar que as exclusões foram realizadas com sucesso
+                                    aceito();
+                                });
+                            }
+                        );
+                    }
+                );
             });
         });
-    }
-};
-
-
+    },
+}
