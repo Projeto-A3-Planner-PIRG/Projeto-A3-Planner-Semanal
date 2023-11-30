@@ -24,18 +24,50 @@ module.exports = {
             });
         });
     },
-    inserir: (nome, data, categoria, concluido, semana)=> {
-        return new Promise((aceito, rejeitado)=> {
-
-            db.query('INSERT INTO evento (nome, data, categoria, concluido, semana) VALUES (?, ?, ?, ?, ?)',
-                [nome, data, categoria, concluido, semana],
-                (error, results)=>{
-                    if(error){ rejeitado(error); return; }
-                    aceito(results.insertId);
+    inserir: (nome, data, categoria, concluido, semana, texto) => {
+        return new Promise((aceito, rejeitado) => {
+            db.beginTransaction((error) => {
+                if (error) {
+                    rejeitado(error);
+                    return;
                 }
-            );
+                db.query(
+                    'INSERT INTO evento (nome, data, categoria, concluido, semana) VALUES (?, ?, ?, ?, ?)',
+                    [nome, data, categoria, concluido, semana],
+                    (errorEvento, resultsEvento) => {
+                        if (errorEvento) {
+                            return db.rollback(() => {
+                                rejeitado(errorEvento);
+                            });
+                        }
+                        const eventoId = resultsEvento.insertId;
+    
+                        db.query(
+                            'INSERT INTO informacoes (id_evento, texto) VALUES (?, ?)',
+                            [eventoId, texto],
+                            (errorInformacoes, resultsInformacoes) => {
+                                if (errorInformacoes) {
+                                    return db.rollback(() => {
+                                        rejeitado(errorInformacoes);
+                                    });
+                                }
+    
+                                db.commit((commitError) => {
+                                    if (commitError) {
+                                        return db.rollback(() => {
+                                            rejeitado(commitError);
+                                        });
+                                    }
+                                    aceito(eventoId);
+                                });
+                            }
+                        );
+                    }
+                );
+            });
         });
     },
+    
     alterar:(id, nome, data, categoria, concluido, semana)=> {
 
         return new Promise((aceito, rejeitado)=> {

@@ -55,16 +55,18 @@ module.exports = {
         let categoria = req.body.categoria;
         let concluido = req.body.concluido;
         let semana = req.body.semana;
-        console.log(nome)
-        if (nome && data && categoria && concluido && semana){
-            let eventoId = await EventoService.inserir(nome, data, categoria, concluido, semana);
+        let texto = req.body.texto;
+        console.log(req.body)
+        if (Object.keys(req.body).length !== 0){
+            let eventoId = await EventoService.inserir(nome, data, categoria, concluido, semana, texto);
             json.result = {
                 id: eventoId,
                 nome,
                 data,
                 categoria,
                 concluido,
-                semana
+                semana,
+                texto
             };
         }else{
             json.error = 'Campos não enviados';
