@@ -1,11 +1,12 @@
 const EventoService = require('../services/EventoService');
+const InformacaoService = require('../services/InformacaoService');
 
 module.exports = {
     
     buscarTodos: async (req, res) => {
         let json = {error:'', result:[]};
 
-        let semana = req.query.semana;
+        let semana = req.params.semana;
 
         if (semana) {
             let evento = await EventoService.buscarUm(semana);
@@ -19,6 +20,7 @@ module.exports = {
         }
 
         let eventos = await EventoService.buscarTodos();
+        let informacoes = await InformacaoService.buscarTodos();
 
         for(let i in eventos){
             json.result.push({
@@ -27,7 +29,8 @@ module.exports = {
                 data: eventos[i].data,
                 categoria: eventos[i].categoria,
                 concluido: eventos[i].concluido,
-                semana: eventos[i].semana
+                semana: eventos[i].semana,
+                texto: informacoes[i].texto
             });
         }
 
@@ -55,18 +58,13 @@ module.exports = {
         let categoria = req.body.categoria;
         let concluido = req.body.concluido;
         let semana = req.body.semana;
-        let texto = req.body.texto;
+
         console.log(req.body)
         if (Object.keys(req.body).length !== 0){
-            let eventoId = await EventoService.inserir(nome, data, categoria, concluido, semana, texto);
+            let eventoId = await EventoService.inserir(nome, data, categoria, concluido, semana);
             json.result = {
                 id: eventoId,
-                nome,
-                data,
-                categoria,
-                concluido,
-                semana,
-                texto
+                sucesso: 'evento cadastrado com sucesso'
             };
         }else{
             json.error = 'Campos não enviados';

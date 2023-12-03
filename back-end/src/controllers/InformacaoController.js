@@ -1,38 +1,55 @@
 const InformacaoService = require('../services/InformacaoService');
 
 module.exports = {
-    
-    buscarTodos: async (req, res) => {
-        let json = {error:'', result:[]};
 
-        let semana = req.query.semana;
+    inserir: async(req, res) => {
+        let json = {error:'', result:{}};
 
-        if (semana) {
-            let evento = await EventoService.buscarUm(semana);
-
-            if(evento){
-                json.result = evento; 
-            }
-
-            res.json(json);
-            return
+        let id_evento = req.body.id_evento;
+        let texto = req.body.texto;
+        console.log(req.body)
+        if (Object.keys(req.body).length !== 0){
+            await InformacaoService.inserir(id_evento, texto);
+            json.result = {
+                success: 'informação cadastrada com sucesso !'
+            };
+        }else{
+            json.error = 'Campos não enviados';
         }
-
-        let eventos = await EventoService.buscarTodos();
-
-        for(let i in eventos){
-            json.result.push({
-                id: eventos[i].id,
-                nome: eventos[i].nome,
-                data: eventos[i].data,
-                categoria: eventos[i].categoria,
-                concluido: eventos[i].concluido,
-                semana: eventos[i].semana
-            });
-        }
-
         res.json(json);
     },
+    
+    // buscarTodos: async (req, res) => {
+    //     let json = {error:'', result:[]};
+
+    //     let semana = req.query.semana;
+
+    //     if (semana) {
+    //         let evento = await EventoService.buscarUm(semana);
+
+    //         if(evento){
+    //             json.result = evento; 
+    //         }
+
+    //         res.json(json);
+    //         return
+    //     }
+
+    //     let eventos = await EventoService.buscarTodos();
+
+    //     for(let i in eventos){
+    //         json.result.push({
+    //             id: eventos[i].id,
+    //             nome: eventos[i].nome,
+    //             data: eventos[i].data,
+    //             categoria: eventos[i].categoria,
+    //             concluido: eventos[i].concluido,
+    //             semana: eventos[i].semana
+    //         });
+    //     }
+
+    //     res.json(json);
+    // },
 
     alterar: async(req, res) => {
         

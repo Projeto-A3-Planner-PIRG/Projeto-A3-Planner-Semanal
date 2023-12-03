@@ -1,0 +1,22 @@
+{
+  "name": "Projeto-A3-Planner-Semanal",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently \"npm run back-end\" \"npm run front-end\"",
+    "back-end": "cd back-end && npm start",
+    "front-end": "cd front-end/pirg && npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Projeto-A3-Planner-PIRG/Projeto-A3-Planner-Semanal.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Projeto-A3-Planner-PIRG/Projeto-A3-Planner-Semanal/issues"
+  },
+  "homepage": "https://github.com/Projeto-A3-Planner-PIRG/Projeto-A3-Planner-Semanal#readme"
+}
