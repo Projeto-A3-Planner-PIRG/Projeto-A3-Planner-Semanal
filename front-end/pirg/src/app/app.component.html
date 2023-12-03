@@ -1,0 +1,107 @@
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+  <header class="mdl-layout__header">
+    <div class="mdl-layout__header-row">
+      <!-- Title -->
+      <span class="mdl-layout-title">Planner Projeto A3</span>
+
+    </div>
+    <!-- Tabs -->
+    <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+      <a href="#scroll-tab-1" class="mdl-layout__tab is-active" (click)="getEvento('Sun', 1)">Domingo</a>
+      <a href="#scroll-tab-2" class="mdl-layout__tab" (click)="getEvento('Mon', 2)">Segunda-feira</a>
+      <a href="#scroll-tab-3" class="mdl-layout__tab" (click)="getEvento('Tue', 3)">Terça-feira</a>
+      <a href="#scroll-tab-4" class="mdl-layout__tab" (click)="getEvento('Wed', 4)">Quarta-feira</a>
+      <a href="#scroll-tab-5" class="mdl-layout__tab" (click)="getEvento('Thu', 5)">Quinta-feira</a>
+      <a href="#scroll-tab-6" class="mdl-layout__tab" (click)="getEvento('Fri', 6)">Sexta-feira</a>
+      <a href="#scroll-tab-7" class="mdl-layout__tab" (click)="getEvento('Sat', 7)">Sábado</a>
+    </div>
+  </header>
+
+
+  <main class="mdl-layout__content">
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--10-col"></div>
+      <div class="mdl-cell mdl-cell--2-col">
+          <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" id="show-dialog">
+              <i class="material-icons">add</i>
+          </button>
+      </div>
+    </div>
+
+
+    <section class="mdl-layout__tab-panel is-active" id="scroll-tab-{{index}}">
+      <div class="page-content">
+          <div class="mdl-grid">
+              <div class="mdl-cell mdl-cell--5-col"></div>
+              <span *ngFor="let item of listEvent">
+                <div class="demo-card mdl-card mdl-shadow--2dp" *ngIf="!contemObjetoVazio(listEvent)">
+                  <div class="mdl-card__title">
+                    <h2 class="mdl-card__title-text">{{item.nome}}</h2>
+                  </div>
+                  <div class="mdl-card__supporting-text">
+                    <p>{{item.texto}}</p>
+                    <p>{{item.data}}</p>
+                    <p>{{item.categoria}}</p>
+                  </div>
+                </div>
+                
+              </span>
+
+              <div  *ngIf="contemObjetoVazio(listEvent)">{{mensagem}}</div>
+              <!-- <div class="mdl-cell mdl-cell--2-col" *ngIf="loading">
+                  <div class="custom-spinner mdl-spinner mdl-js-spinner is-active"></div>
+              </div> -->
+              <div class="mdl-cell mdl-cell--5-col"></div>
+          </div>
+          <!-- MDL Spinner Component -->
+      </div>
+    </section>
+
+    
+  </main>
+
+  <dialog class="mdl-dialog">
+    <div class="demo-card-wide mdl-card mdl-shadow--2dp">
+        <div class="mdl-card__title">
+          <h2 class="mdl-card__title-text">Contact details</h2>
+        </div>
+        
+        
+        <div class="mdl-card__supporting-text">
+          <form [formGroup]="meuFormulario">
+            
+              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" id="nome" formControlName="nome">
+                <label class="mdl-textfield__label" for="sample3">Nome</label>
+              </div>
+
+              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="date" id="last" formControlName="data">
+              </div>
+
+              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <label for="categoria">Selecione uma categoria</label> <br>
+                <select id="categoria" name="categoria" formControlName="categoria"> 
+                  <option value="estudos">Estudos</option>
+                  <option value="tarefas">Tarefa diária</option>
+                  <option value="compromisso">Compromisso</option>
+                  <option value="evento">Evento</option>
+                  <option value="outros">Outros</option>
+                </select>
+              </div>
+
+              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <textarea class="mdl-textfield__input" type="text" id="informacoes" formControlName="informacoes"></textarea>
+                <label class="mdl-textfield__label" for="sample3">Informação</label>
+              </div>
+          </form>
+        </div>
+        
+    </div>
+
+    <div class="mdl-dialog__actions">
+      <button type="button" class="mdl-button close" (click)="enviarFormulario()">Enviar</button>
+    </div>
+</dialog>
+
+</div>
