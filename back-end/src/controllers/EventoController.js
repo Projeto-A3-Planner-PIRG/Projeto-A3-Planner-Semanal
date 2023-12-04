@@ -64,6 +64,7 @@ module.exports = {
             let eventoId = await EventoService.inserir(nome, data, categoria, concluido, semana);
             json.result = {
                 id: eventoId,
+                semana: semana,
                 sucesso: 'evento cadastrado com sucesso'
             };
         }else{

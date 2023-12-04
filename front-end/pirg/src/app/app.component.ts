@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { EventoService } from './evento.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { InformacoesService } from './informacoes.service';
-import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-root',
@@ -55,17 +55,17 @@ export class AppComponent implements  OnInit {
     });
   }
 
+  semana: any
   postEvento() {
     this.info = this.meuFormulario.value.informacoes
     delete this.meuFormulario.value.informacoes
     console.log(this.meuFormulario.value.data)
     this.meuFormulario.value.concluido = false
     const date = this.meuFormulario.value.data
-    console.log(this.meuFormulario.value.data)
-    this.meuFormulario.value.semana = new Date(`${new Date(date).getFullYear()}-${new Date(date).getMonth()+1}-${new Date(date).getDate()+2}`).toLocaleDateString('en-US',  {weekday: 'short'} )
+    this.meuFormulario.value.semana = new Date(`${new Date(date).getFullYear()}-${new Date(date).getMonth()+1}-${new Date(date).getDate()+1}`).toLocaleDateString('en-US',  {weekday: 'short'} )
 this.eventoService.postEvento(this.meuFormulario.value)
       .subscribe(response => {
-        console.log(response, 'presta atencao aqui')
+        this.semana = response.result.semana
         this.postInformacoes(response.result.id)
       })
   }
@@ -76,6 +76,7 @@ this.eventoService.postEvento(this.meuFormulario.value)
       texto: this.info
     }
     this.informacoesService.postInformacoes(payload).subscribe(response => {
+      this.getEvento(this.semana, this.index)
       console.log('tudo cadastrado com sucesso', response)
     })
   }
@@ -95,7 +96,6 @@ this.eventoService.postEvento(this.meuFormulario.value)
       } else {
         this.listEvent = data.result
       }
-      console.log(this.listEvent)
       this.loading = false
     })
   }
