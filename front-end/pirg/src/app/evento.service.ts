@@ -15,8 +15,15 @@ export class EventoService {
     return this.http.get(`${this.apiUrl}/evento?semana=${semana}`);
   }
 
+  deletarEvento (id: number) {
+    return this.http.delete<any>(`${this.apiUrl}/evento/del/${id}`);
+  }
 
   postEvento(payload: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/evento`, payload);
+  }
+
+  putEvento(payload: any, id): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/evento/${id}`, payload);
   }
 }

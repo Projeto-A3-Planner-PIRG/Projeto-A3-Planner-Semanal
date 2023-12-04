@@ -1,11 +1,78 @@
 .demo-card-wide.mdl-card {
     width: 512px;
+
   }
   .demo-card-wide > .mdl-card__title {
     color: #fff;
-    height: 176px;
     background: purple
   }
   .demo-card-wide > .mdl-card__menu {
     color: #fff;
   }
+
+.custom-mdl-card__title {
+  background: rgb(255,64,129);
+  color:#fff;
+}
+
+.tarefas {
+  color: #fff;
+  padding: 0.4rem;
+  background: rgb(255,64,129);
+  border-radius: 0.5rem;
+  opacity: 0.8;
+}
+
+.estudos {
+  color: #fff;
+  padding: 0.4rem;
+  background: purple;
+  border-radius: 0.5rem;
+  opacity: 0.8;
+}
+
+
+.compromisso {
+  color: #000000;
+  padding: 0.4rem;
+  background: rgb(255, 213, 0);
+  border-radius: 0.5rem;
+  opacity: 0.8;
+}
+
+.evento {
+  color: #fff;
+  padding: 0.4rem;
+  background: rgb(0, 128, 30);
+  border-radius: 0.5rem;
+  opacity: 0.8;
+}
+
+.outros {
+  color: #fff;
+  padding: 0.4rem;
+  background: blue;
+  border-radius: 0.5rem;
+  opacity: 0.8;
+}
+
+.mdl-checkbox__input {
+  transform: scale(1.5); /* Ajuste conforme necessário */
+}
+
+.concluido {
+  background-color: #f0f0f0; /* Altere a cor de fundo para indicar conclusão */
+  opacity: 0.8; /* Ajuste a opacidade conforme necessário */
+  text-decoration: line-through
+}
+
+.label-checked {
+  position: relative;
+  top: 0.2rem;
+}
+
+.mdl-dialog {
+  width: 512px;
+  padding: 0;
+  height: 456px;
+}

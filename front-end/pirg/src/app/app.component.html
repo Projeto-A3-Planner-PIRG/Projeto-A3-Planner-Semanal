@@ -7,19 +7,20 @@
     </div>
     <!-- Tabs -->
     <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
-      <a href="#scroll-tab-1" class="mdl-layout__tab is-active" (click)="getEvento('Sun', 1)">Domingo</a>
-      <a href="#scroll-tab-2" class="mdl-layout__tab" (click)="getEvento('Mon', 2)">Segunda-feira</a>
-      <a href="#scroll-tab-3" class="mdl-layout__tab" (click)="getEvento('Tue', 3)">Terça-feira</a>
-      <a href="#scroll-tab-4" class="mdl-layout__tab" (click)="getEvento('Wed', 4)">Quarta-feira</a>
-      <a href="#scroll-tab-5" class="mdl-layout__tab" (click)="getEvento('Thu', 5)">Quinta-feira</a>
-      <a href="#scroll-tab-6" class="mdl-layout__tab" (click)="getEvento('Fri', 6)">Sexta-feira</a>
-      <a href="#scroll-tab-7" class="mdl-layout__tab" (click)="getEvento('Sat', 7)">Sábado</a>
+      <a href="#scroll-tab-1" class="mdl-layout__tab is-active" (click)="getEvento('Sun', 1)" [ngClass]="{'is-active': (index == 1)}">Domingo</a>
+      <a href="#scroll-tab-2" class="mdl-layout__tab" (click)="getEvento('Mon', 2)" [ngClass]="{'is-active': (index == 2)}">Segunda-feira</a>
+      <a href="#scroll-tab-3" class="mdl-layout__tab" (click)="getEvento('Tue', 3)" [ngClass]="{'is-active': (index == 3)}">Terça-feira</a>
+      <a href="#scroll-tab-4" class="mdl-layout__tab" (click)="getEvento('Wed', 4)" [ngClass]="{'is-active': (index == 4)}">Quarta-feira</a>
+      <a href="#scroll-tab-5" class="mdl-layout__tab" (click)="getEvento('Thu', 5)" [ngClass]="{'is-active': (index == 5)}">Quinta-feira</a>
+      <a href="#scroll-tab-6" class="mdl-layout__tab" (click)="getEvento('Fri', 6)" [ngClass]="{'is-active': (index == 6)}">Sexta-feira</a>
+      <a href="#scroll-tab-7" class="mdl-layout__tab" (click)="getEvento('Sat', 7)" [ngClass]="{'is-active': (index == 7)}">Sábado</a>
     </div>
   </header>
 
 
   <main class="mdl-layout__content">
-    <div class="mdl-grid">
+    
+    <div class="mdl-grid mdl-cell--center">
       <div class="mdl-cell mdl-cell--10-col"></div>
       <div class="mdl-cell mdl-cell--2-col">
           <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" id="show-dialog">
@@ -31,29 +32,46 @@
 
     <section class="mdl-layout__tab-panel is-active" id="scroll-tab-{{index}}">
       <div class="page-content">
-          <div class="mdl-grid">
-              <div class="mdl-cell mdl-cell--5-col"></div>
-              <span *ngFor="let item of listEvent">
-                <div class="demo-card mdl-card mdl-shadow--2dp" *ngIf="!contemObjetoVazio(listEvent)">
-                  <div class="mdl-card__title">
-                    <h2 class="mdl-card__title-text">{{item.nome}}</h2>
+          <div class="row">
+              
+
+              <div *ngFor="let item of listEvent" class="col-3">
+                <div class="demo-card mdl-card mdl-shadow--2dp" *ngIf="!contemObjetoVazio(listEvent)" [ngClass]="{'concluido': item.concluido == 1}">
+                  <div class="mdl-card__title custom-mdl-card__title">
+                    <h2 class="mdl-card__title-text">{{item.nome | uppercase}}</h2>
                   </div>
                   <div class="mdl-card__supporting-text">
-                    <p>{{item.texto}}</p>
-                    <p>{{item.data}}</p>
-                    <p>{{item.categoria}}</p>
+                    <p>DATA: {{item.data | date : 'dd/MM/yyyy'}}</p>
+                    <p class="{{item.categoria}}">CATEGORIA: {{item.categoria}}</p>
+                    <p>INFORMAÇÃO: {{item.texto}}</p>
                   </div>
-                </div>
-                
-              </span>
+                  
+                  <div class="row ml-2 pb-3">
+                    <div class="col-1">
+                      <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect check label-checked" for="checkbox-{{item.id}}">
+                        <input type="checkbox" id="checkbox-{{item.id}}" class="mdl-checkbox__input" [(ngModel)]="item.concluido" (click)="updateCheck(item, !item.concluido)" [checked]="item.concluido">
+                      </label>                      
+                    </div>
 
-              <div  *ngIf="contemObjetoVazio(listEvent)">{{mensagem}}</div>
-              <!-- <div class="mdl-cell mdl-cell--2-col" *ngIf="loading">
-                  <div class="custom-spinner mdl-spinner mdl-js-spinner is-active"></div>
-              </div> -->
+                    <div class="col-1">
+                      <button class="mdl-button mdl-js-button mdl-button--icon">
+                        <i class="material-icons" (click)="deletar(item.id, item.semana)">delete</i>
+                      </button>
+                    </div>
+                  </div>
+                  
+
+                </div>
+
+                <br><br>
+                
+              </div>
+
+              <div class="alert alert-info" role="alert" *ngIf="contemObjetoVazio(listEvent)">{{mensagem}}</div>
+
               <div class="mdl-cell mdl-cell--5-col"></div>
           </div>
-          <!-- MDL Spinner Component -->
+        
       </div>
     </section>
 
@@ -71,17 +89,17 @@
           <form [formGroup]="meuFormulario">
             
               <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input class="mdl-textfield__input" type="text" id="nome" formControlName="nome">
+                <input class="mdl-textfield__input" type="text" id="nome" formControlName="nome" required>
                 <label class="mdl-textfield__label" for="sample3">Nome</label>
               </div>
 
               <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input class="mdl-textfield__input" type="date" id="last" formControlName="data">
+                <input class="mdl-textfield__input" type="date" id="last" formControlName="data" required>
               </div>
 
               <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                 <label for="categoria">Selecione uma categoria</label> <br>
-                <select id="categoria" name="categoria" formControlName="categoria"> 
+                <select id="categoria" name="categoria" formControlName="categoria" required> 
                   <option value="estudos">Estudos</option>
                   <option value="tarefas">Tarefa diária</option>
                   <option value="compromisso">Compromisso</option>
@@ -91,17 +109,19 @@
               </div>
 
               <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <textarea class="mdl-textfield__input" type="text" id="informacoes" formControlName="informacoes"></textarea>
+                <textarea class="mdl-textfield__input" type="text" id="informacoes" formControlName="informacoes" required></textarea>
                 <label class="mdl-textfield__label" for="sample3">Informação</label>
+              </div>
+
+              <div class="mdl-dialog__actions">
+                <button type="button" class="btn btn-block close" (click)="enviarFormulario()" [disabled]="!meuFormulario.valid">Enviar</button>
               </div>
           </form>
         </div>
         
     </div>
 
-    <div class="mdl-dialog__actions">
-      <button type="button" class="mdl-button close" (click)="enviarFormulario()">Enviar</button>
-    </div>
+    
 </dialog>
 
 </div>
